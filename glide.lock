@@ -1,0 +1,26 @@
+hash: 077da6174185d65baf80d9b6d1384a34acf9cb2642e4663cfd72f4866f994000
+updated: 2016-07-24T21:31:01.140186558+10:00
+imports:
+- name: github.com/DavidHuie/gomigrate
+  version: 1b90a570dc6b7aaaefa233eacf304be363a89603
+- name: github.com/go-kit/kit
+  version: 12508679d6601843bacae19be6a8f0e84c8b19ed
+  subpackages:
+  - endpoint
+- name: github.com/gorilla/mux
+  version: 0eeaf8392f5b04950925b8a69fe70f110fa7cbfc
+- name: github.com/jmoiron/sqlx
+  version: bdae0c3219c3bdb92f3d7c70825018712787c933
+- name: github.com/lib/pq
+  version: 4dd446efc17690bc53e154025146f73203b18309
+- name: github.com/Masterminds/squirrel
+  version: caff2d522d550f0998629c85898ad35e8a603328
+- name: github.com/rs/cors
+  version: a62a804a8a009876ca59105f7899938a1349f4b3
+- name: github.com/satori/go.uuid
+  version: 879c5887cd475cd7864858769793b2ceb0d44feb
+- name: golang.org/x/net
+  version: 4d38db76854b199960801a1734443fd02870d7e1
+  subpackages:
+  - context
+testImports: []
