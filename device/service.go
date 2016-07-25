@@ -7,7 +7,6 @@ type DeviceService interface {
 	Delete()
 }
 
-
 type deviceService struct{}
 
 func NewService() *deviceService {
@@ -15,5 +14,13 @@ func NewService() *deviceService {
 }
 
 func (d deviceService) Create() {
+
+}
+
+func (d deviceService) Update() {
+
+}
+
+func (d deviceService) Delete() {
 
 }

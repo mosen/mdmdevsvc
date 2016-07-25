@@ -1,5 +1,5 @@
 package jsonapi
 
 type Links struct {
-	About string `json:"about"`
+	Self string `json:"self,omitempty"`
 }
