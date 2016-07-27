@@ -1,7 +1,6 @@
 package device
 
 import (
-	"database/sql"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/jmoiron/sqlx"
 	"github.com/satori/go.uuid"

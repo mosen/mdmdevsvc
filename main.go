@@ -62,7 +62,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	deviceSvc := device.NewService()
+	deviceDb := device.NewDatastore(db)
+	deviceSvc := device.NewService(deviceDb)
 	deviceHandler := device.ServiceHandler(ctx, deviceSvc, logger)
 
 	mux := http.NewServeMux()

@@ -1,12 +1,12 @@
 package device
 
 import (
-	"golang.org/x/net/context"
-	"net/http"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	kitlog "github.com/go-kit/kit/log"
 	kithttp "github.com/go-kit/kit/transport/http"
+	"github.com/gorilla/mux"
+	"golang.org/x/net/context"
+	"net/http"
 )
 
 func decodeCreateRequest(_ context.Context, r *http.Request) (interface{}, error) {
@@ -31,10 +31,10 @@ func ServiceHandler(ctx context.Context, svc deviceService, logger kitlog.Logger
 
 	createHandler := kithttp.NewServer(
 		ctx,
-		MakeCreateEndpoint(svc),
+		makeCreateEndpoint(svc),
 		decodeCreateRequest,
 		encodeResponse,
-		opts...
+		opts...,
 	)
 
 	r.Handle("/", createHandler).Methods("POST")
