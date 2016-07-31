@@ -2,12 +2,13 @@ package device
 
 import (
 	"github.com/go-kit/kit/endpoint"
+	"github.com/go-kit/kit/log"
 	"github.com/mosen/devicestore/jsonapi"
 	"golang.org/x/net/context"
 )
 
 type createRequest struct {
-	device Device `json:"data"`
+	jsonapi.Data
 }
 
 type createResponse struct {
@@ -15,15 +16,17 @@ type createResponse struct {
 	err    *jsonapi.Error
 }
 
-func makeCreateEndpoint(svc deviceService) endpoint.Endpoint {
+func makeCreateEndpoint(svc deviceService, logger log.Logger) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		req := request.(createRequest)
-		_, jsonApiErr := svc.Create(&req.device)
+		//req := request.(createRequest)
+		logger.Log("Creating new device")
+		_, jsonApiErr := svc.Create(&Device{})
 		if jsonApiErr != nil {
-			return createResponse{device: nil, err: jsonApiErr}, nil
+			//return createResponse{device: nil, err: jsonApiErr}, nil
 		}
-
-		return createResponse{device: &req.device, err: nil}, nil
+		//
+		//return createResponse{device: &req.data.Attributes, err: nil}, nil
+		return nil, nil
 	}
 }
 

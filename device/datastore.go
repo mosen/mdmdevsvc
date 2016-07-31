@@ -2,12 +2,15 @@ package device
 
 import (
 	sq "github.com/Masterminds/squirrel"
+	kitlog "github.com/go-kit/kit/log"
 	"github.com/jmoiron/sqlx"
 	"github.com/satori/go.uuid"
+	"os"
 )
 
 type dataStore struct {
 	*sqlx.DB
+	kitlog.Logger
 }
 
 // Finds a single device
@@ -68,6 +71,8 @@ func (d dataStore) Insert(device *Device) (string, error) {
 		return "", err
 	}
 
+	d.Logger.Log(sql)
+
 	var uuid string
 	d.QueryRow(sql, args...).Scan(&uuid)
 
@@ -91,5 +96,6 @@ func (d dataStore) Delete(uuid uuid.UUID) error {
 func NewDatastore(db *sqlx.DB) *dataStore {
 	return &dataStore{
 		db,
+		kitlog.NewLogfmtLogger(os.Stdout),
 	}
 }

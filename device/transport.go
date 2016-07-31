@@ -2,6 +2,7 @@ package device
 
 import (
 	"encoding/json"
+	"fmt"
 	kitlog "github.com/go-kit/kit/log"
 	kithttp "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
@@ -11,9 +12,13 @@ import (
 
 func decodeCreateRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var request createRequest
+
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		return nil, err
 	}
+
+	fmt.Printf("%v\n", request)
+
 	return request, nil
 }
 
@@ -31,7 +36,7 @@ func ServiceHandler(ctx context.Context, svc deviceService, logger kitlog.Logger
 
 	createHandler := kithttp.NewServer(
 		ctx,
-		makeCreateEndpoint(svc),
+		makeCreateEndpoint(svc, logger),
 		decodeCreateRequest,
 		encodeResponse,
 		opts...,

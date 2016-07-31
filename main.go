@@ -79,7 +79,8 @@ func main() {
 
 	mux.Handle("/v1/devices", deviceHandler)
 
-	http.ListenAndServe(*flPort, nil)
+	portStr := fmt.Sprintf(":%v", flPort)
+	http.ListenAndServe(portStr, nil)
 }
 
 func getEnvDefault(key string, defaultValue string) string {
