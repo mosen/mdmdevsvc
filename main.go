@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/DavidHuie/gomigrate"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/term"
 	"github.com/jmoiron/sqlx"
@@ -42,8 +43,8 @@ func main() {
 
 	// Flags
 	var (
-		flPort      = flag.String("port", "3000", "port to listen on")
-		flDbConnUrl = flag.String("db", "user=devicestore password=devicestore dbname=devicestore sslmode=disable", "database connection url (postgres)")
+		flPort      = flag.String("port", getEnvDefault("DEVICESVC_PORT", "3000"), "port to listen on")
+		flDbConnUrl = flag.String("db", getEnvDefault("DEVICESVC_DB_CONN", "user=devicestore password=devicestore dbname=devicestore sslmode=disable"), "database connection url (postgres)")
 	)
 
 	flag.Parse()
@@ -62,13 +63,29 @@ func main() {
 		os.Exit(1)
 	}
 
+	migrator, _ := gomigrate.NewMigrator(db.DB, gomigrate.Postgres{}, "./migrations")
+	migrationErr := migrator.Migrate()
+
+	if migrationErr != nil {
+		logger.Log("err", err)
+		os.Exit(1)
+	}
+
 	deviceDb := device.NewDatastore(db)
 	deviceSvc := device.NewService(deviceDb)
-	deviceHandler := device.ServiceHandler(ctx, deviceSvc, logger)
+	deviceHandler := device.ServiceHandler(ctx, *deviceSvc, logger)
 
 	mux := http.NewServeMux()
 
 	mux.Handle("/v1/devices", deviceHandler)
 
 	http.ListenAndServe(*flPort, nil)
+}
+
+func getEnvDefault(key string, defaultValue string) string {
+	value := os.Getenv(key)
+	if value == "" {
+		value = defaultValue
+	}
+	return value
 }

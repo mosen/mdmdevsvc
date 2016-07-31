@@ -17,3 +17,7 @@ type Error struct {
 	Source ErrorSource       `json:"source,omitempty"`
 	Meta   map[string]string `json:"meta,omitempty"`
 }
+
+func (e *Error) Error() string {
+	return e.Detail
+}

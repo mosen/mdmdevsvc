@@ -9,3 +9,8 @@ type Data struct {
 	URL           url.URL
 	Attributes    interface{} `json:"attributes,omitempty"`
 }
+
+type DataObject interface {
+	Type() string
+	URL(id string) url.URL
+}
