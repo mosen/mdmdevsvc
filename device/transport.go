@@ -8,10 +8,11 @@ import (
 	"github.com/gorilla/mux"
 	"golang.org/x/net/context"
 	"net/http"
+	"github.com/mosen/devicestore/jsonapi"
 )
 
 func decodeCreateRequest(_ context.Context, r *http.Request) (interface{}, error) {
-	var request createRequest
+	var request jsonapi.CreateRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		return nil, err
@@ -23,6 +24,7 @@ func decodeCreateRequest(_ context.Context, r *http.Request) (interface{}, error
 }
 
 func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
+	w.Header().Set("Content-Type", "application/vnd.api+json")
 	return json.NewEncoder(w).Encode(response)
 }
 

@@ -7,26 +7,21 @@ import (
 	"golang.org/x/net/context"
 )
 
-type createRequest struct {
-	jsonapi.Data
-}
-
-type createResponse struct {
-	device *Device `json:"data,omitempty"`
-	err    *jsonapi.Error
-}
-
 func makeCreateEndpoint(svc deviceService, logger log.Logger) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		//req := request.(createRequest)
-		logger.Log("Creating new device")
-		_, jsonApiErr := svc.Create(&Device{})
+		req := request.(jsonapi.CreateRequest)
+		createDevice := req.Data.Attributes.(Device)
+
+		objectUuid, jsonApiErr := svc.Create(&createDevice)
 		if jsonApiErr != nil {
-			//return createResponse{device: nil, err: jsonApiErr}, nil
+			return jsonapi.CreateResponse{Data: nil, Errors: []jsonapi.Error{*jsonApiErr}}, nil
 		}
-		//
-		//return createResponse{device: &req.data.Attributes, err: nil}, nil
-		return nil, nil
+
+		return jsonapi.CreateResponse{Data: &jsonapi.Data{
+			Type: "devices",
+			Id: objectUuid.String(),
+			Attributes: req.Data.Attributes,
+		}, Errors: nil}, nil
 	}
 }
 

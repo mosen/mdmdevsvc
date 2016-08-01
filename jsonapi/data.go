@@ -1,16 +1,19 @@
 package jsonapi
 
-import "net/url"
+import (
+	"net/url"
+	"github.com/satori/go.uuid"
+)
 
 type Data struct {
 	Id            string          `json:"id,omitempty"`
 	Type          string          `json:"type"`
-	Relationships map[string]Data `json:"relationships,omitempty"`
-	URL           url.URL
-	Attributes    interface{} `json:"attributes,omitempty"`
+	Attributes    interface{}     `json:"attributes,omitempty"`
 }
 
 type DataObject interface {
+	Id() (*uuid.UUID, bool)
 	Type() string
-	URL(id string) url.URL
+	Links() map[string]url.URL
+	Attributes() interface{}
 }
