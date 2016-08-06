@@ -43,7 +43,7 @@ func (s *service) PostDevice(ctx context.Context, d *Device) (uuid.UUID, *jsonap
 func (s *service) GetDevice(ctx context.Context, uuidStr string) (Device, error) {
 	uuidObj, err := uuid.FromString(uuidStr)
 	if err != nil {
-		return nil, &jsonapi.Error{
+		return Device{}, &jsonapi.Error{
 			Status: "400",
 			Title: "Malformed UUID",
 			Detail: "",
@@ -52,20 +52,20 @@ func (s *service) GetDevice(ctx context.Context, uuidStr string) (Device, error)
 
 	device, err := s.store.Find(uuidObj)
 	if err != nil {
-		return nil, &jsonapi.Error{
+		return Device{}, &jsonapi.Error{
 			Status: "500",
 			Title: "Query Error",
-			Detail: err,
+			Detail: err.Error(),
 		}
 	}
 
 	if device == nil {
-		return nil, &jsonapi.Error{
+		return Device{}, &jsonapi.Error{
 			Status: "404",
 			Title: "Device not found",
 			Detail: "",
 		}
 	} else {
-		return device, nil
+		return *device, nil
 	}
 }

@@ -9,6 +9,7 @@ import (
 	"golang.org/x/net/context"
 	"net/http"
 	"github.com/mosen/devicestore/jsonapi"
+	"errors"
 )
 
 func decodeCreateRequest(_ context.Context, r *http.Request) (interface{}, error) {
@@ -50,5 +51,5 @@ func MakeHTTPHandler(ctx context.Context, s Service, logger kitlog.Logger) http.
 }
 
 func decodePostDeviceRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
-
+	return nil, errors.New("Not Implemented")
 }

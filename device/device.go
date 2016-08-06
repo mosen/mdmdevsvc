@@ -24,4 +24,22 @@ type Device struct {
 	WarrantyExpires time.Time `json:"warranty_expires,omitempty"`
 	Color           string    `json:"color,omitempty"`
 	OSVersion       string    `json:"os_version,omitempty"`
+	LastCheckin     time.Time `json:"last_checkin,omitempty"`
+
+	// DEP
+	HasDEP                 bool      `json:"has_dep"`
+	DepProfileStatus       string    `json:"dep_profile_status,omitempty"`
+	DepProfileUUID         uuid.UUID `json:"dep_profile_uuid,omitempty"`
+	DepProfileAssignTime   time.Time `json:"dep_profile_assign_time,omitempty"`
+	DepProfilePushTime     time.Time `json:"dep_profile_push_time,omitempty"`
+	DepProfileAssignedDate time.Time `json:"dep_profile_assigned_date,omitempty"`
+	DepProfileAssignedBy   string    `json:"dep_profile_assigned_by,omitempty"`
+
+	// Apple
+	AppleMDMToken              string `json:"apple_mdm_token,omitempty"`
+	AppleMDMTopic              string `json:"apple_mdm_topic,omitempty"`
+	ApplePushMagic             string `json:"apple_push_magic,omitempty"`
+	AppleMDMEnrolled           bool   `json:"apple_mdm_enrolled"`
+	AppleUnlockToken           string `json:"apple_unlock_token,omitempty"`
+	AppleAwaitingConfiguration bool   `json:"apple_awaiting_configuration,omitempty"`
 }

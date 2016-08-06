@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS devices (
   product_name text NOT NULL DEFAULT '',
 
   -- DEP only
-  dep_device boolean,
+  has_dep boolean NOT NULL DEFAULT FALSE,
   dep_profile_status text,
   dep_profile_uuid text,
   dep_profile_assign_time date,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS devices (
   apple_mdm_token text,
   apple_mdm_topic text,
   apple_push_magic text,
-  apple_mdm_enrolled boolean,
+  apple_mdm_enrolled boolean NOT NULL DEFAULT FALSE,
   apple_unlock_token BYTEA,
 
   awaiting_configuration boolean,
