@@ -46,7 +46,6 @@ func main() {
 		flPort      = flag.String("port", getEnvDefault("DEVICESVC_PORT", "3000"), "port to listen on")
 		flDbConnUrl = flag.String("db", getEnvDefault("DEVICESVC_DB_CONN", "user=devicestore password=devicestore dbname=devicestore sslmode=disable"), "database connection url (postgres)")
 	)
-
 	flag.Parse()
 
 	var db *sqlx.DB
@@ -73,11 +72,12 @@ func main() {
 
 	deviceDb := device.NewDatastore(db)
 	deviceSvc := device.NewService(deviceDb)
-	deviceHandler := device.ServiceHandler(ctx, *deviceSvc, logger)
+	deviceSvc = device.LoggingMiddleware(logger)(deviceSvc)
+	deviceHandler := device.MakeHTTPHandler(ctx, deviceSvc, logger)
 
 	mux := http.NewServeMux()
 
-	mux.Handle("/v1/devices", deviceHandler)
+	mux.Handle("/v1/", deviceHandler)
 
 	portStr := fmt.Sprintf(":%v", flPort)
 	http.ListenAndServe(portStr, nil)

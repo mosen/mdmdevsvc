@@ -27,7 +27,7 @@ func MakePostDeviceEndpoint(s Service) endpoint.Endpoint {
 
 		objectUuid, jsonApiErr := s.PostDevice(ctx, createDevice)
 		if jsonApiErr != nil {
-			return jsonapi.CreateResponse{Data: nil, Errors: []jsonapi.Error{*jsonApiErr}}, nil
+			return jsonapi.CreateResponse{Data: nil, Errors: []jsonapi.Error{}}, nil
 		}
 
 		return jsonapi.CreateResponse{Data: &jsonapi.Data{
