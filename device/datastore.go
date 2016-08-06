@@ -8,13 +8,20 @@ import (
 	"os"
 )
 
+type Datastore interface {
+	Find(uuid uuid.UUID) (*Device, error)
+	FindAll() ([]Device, error)
+	Insert(device *Device) (uuid.UUID, error)
+	Delete(uuid uuid.UUID) error
+}
+
 type dataStore struct {
 	*sqlx.DB
 	kitlog.Logger
 }
 
 // Finds a single device
-func (d dataStore) Find(uuid uuid.UUID) (*Device, error) {
+func (d *dataStore) Find(uuid uuid.UUID) (*Device, error) {
 	device := sq.Select("*").From("devices").Where(sq.Eq{"uuid": uuid.String()})
 	sql, args, err := device.ToSql()
 	if err != nil {
@@ -29,7 +36,7 @@ func (d dataStore) Find(uuid uuid.UUID) (*Device, error) {
 	return &result, nil
 }
 
-func (d dataStore) FindAll() ([]Device, error) {
+func (d *dataStore) FindAll() ([]Device, error) {
 	stmt := sq.Select("*").From("devices")
 	sql, args, err := stmt.ToSql()
 	if err != nil {
@@ -45,7 +52,7 @@ func (d dataStore) FindAll() ([]Device, error) {
 }
 
 // Inserts a device and returns its uuid
-func (d dataStore) Insert(device *Device) (string, error) {
+func (d *dataStore) Insert(device *Device) (uuid.UUID, error) {
 	ins := sq.Insert("devices").Columns(
 		"udid",
 		"serial_number",
@@ -68,18 +75,18 @@ func (d dataStore) Insert(device *Device) (string, error) {
 
 	sql, args, err := ins.ToSql()
 	if err != nil {
-		return "", err
+		return uuid.Nil, err
 	}
 
 	d.Logger.Log(sql)
 
-	var uuid string
+	var uuid uuid.UUID
 	d.QueryRow(sql, args...).Scan(&uuid)
 
 	return uuid, nil
 }
 
-func (d dataStore) Delete(uuid uuid.UUID) error {
+func (d *dataStore) Delete(uuid uuid.UUID) error {
 	stmt := sq.Delete("devices").Where(sq.Eq{"uuid": uuid.String()})
 	sql, args, err := stmt.ToSql()
 	if err != nil {
@@ -93,7 +100,7 @@ func (d dataStore) Delete(uuid uuid.UUID) error {
 	return nil
 }
 
-func NewDatastore(db *sqlx.DB) *dataStore {
+func NewDatastore(db *sqlx.DB) Datastore {
 	return &dataStore{
 		db,
 		kitlog.NewLogfmtLogger(os.Stdout),

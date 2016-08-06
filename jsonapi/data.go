@@ -11,6 +11,11 @@ type Data struct {
 	Attributes    interface{}     `json:"attributes,omitempty"`
 }
 
+func (d *Data) UnmarshalJSON(data []byte) error {
+
+	return nil
+}
+
 type DataObject interface {
 	Id() (*uuid.UUID, bool)
 	Type() string

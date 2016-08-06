@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	kitlog "github.com/go-kit/kit/log"
-	kithttp "github.com/go-kit/kit/transport/http"
+	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
 	"golang.org/x/net/context"
 	"net/http"
@@ -28,23 +28,27 @@ func encodeResponse(_ context.Context, w http.ResponseWriter, response interface
 	return json.NewEncoder(w).Encode(response)
 }
 
-// ServiceHandler returns an HTTP Handler for the devices service
-func ServiceHandler(ctx context.Context, svc deviceService, logger kitlog.Logger) http.Handler {
-	opts := []kithttp.ServerOption{
-		kithttp.ServerErrorLogger(logger),
+
+func MakeHTTPHandler(ctx context.Context, s Service, logger kitlog.Logger) http.Handler {
+	r := mux.NewRouter()
+	e := MakeServerEndpoints(s)
+	options := []httptransport.ServerOption{
+		httptransport.ServerErrorLogger(logger),
+		//kithttp.ServerErrorEncoder(encodeError),
 	}
 
-	r := mux.NewRouter()
-
-	createHandler := kithttp.NewServer(
+	// POST		/devices/	create a device
+	r.Methods("POST").Path("/devices/").Handler(httptransport.NewServer(
 		ctx,
-		makeCreateEndpoint(svc, logger),
-		decodeCreateRequest,
+		e.PostDeviceEndpoint,
+		decodePostDeviceRequest,
 		encodeResponse,
-		opts...,
-	)
-
-	r.Handle("/", createHandler).Methods("POST")
+		options...,
+	))
 
 	return r
+}
+
+func decodePostDeviceRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
+
 }

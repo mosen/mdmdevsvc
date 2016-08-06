@@ -12,10 +12,10 @@ func JsonApiRequestMiddleware() Middleware {
 	return func(next endpoint.Endpoint) endpoint.Endpoint {
 		return func(ctx context.Context, request interface{}) (interface{}, error) {
 			jsonApiRequest := request.(http.Request)
-			if jsonApiRequest.Method == "POST" && jsonApiRequest.Header().Get("Content-Type") != "application/vnd.api+json" {
+			if jsonApiRequest.Method == "POST" && jsonApiRequest.Header.Get("Content-Type") != "application/vnd.api+json" {
 				jsonApiErr := &Error{
 					Id: "not_acceptable",
-					Status: 406,
+					Status: "406",
 					Title: "Not Acceptable",
 					Detail: "Content-Type header must be set to 'application/vnd.api+json'",
 				}
@@ -23,10 +23,10 @@ func JsonApiRequestMiddleware() Middleware {
 				return nil, jsonApiErr
 			}
 
-			if jsonApiRequest.Header().Get("Accept") != "application/vnd.api+json" {
+			if jsonApiRequest.Header.Get("Accept") != "application/vnd.api+json" {
 				jsonApiErr := &Error{
 					Id: "not_acceptable",
-					Status: 406,
+					Status: "406",
 					Title: "Not Acceptable",
 					Detail: "Accept header must be set to 'application/vnd.api+json'",
 				}
