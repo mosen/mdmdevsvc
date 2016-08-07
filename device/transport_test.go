@@ -17,8 +17,8 @@ import (
 var (
 	db  *sqlx.DB
 	err error
-	ds  *dataStore
-	svc *deviceService
+	ds  DeviceRepository
+	svc Service
 )
 
 func setup() {
@@ -32,7 +32,7 @@ func setup() {
 		panic(err)
 	}
 
-	ds = NewDatastore(db)
+	ds = NewRepository(db)
 	svc = NewService(ds)
 }
 
@@ -63,9 +63,11 @@ func TestServiceHandler(t *testing.T) {
 		}
 	}`)
 
-	req, err := http.NewRequest("POST", "/", &nopCloser{bytes.NewBuffer(reqBody)})
+	req, err := http.NewRequest("POST", "/devices", &nopCloser{bytes.NewBuffer(reqBody)})
 	req.Header.Set("Content-Type", "application/vnd.api+json")
 	req.Header.Set("Accept", "application/vnd.api+json")
+
+	fmt.Printf("%v\n", req)
 
 	if err != nil {
 		t.Fatal(err)
@@ -75,7 +77,7 @@ func TestServiceHandler(t *testing.T) {
 	ctx := context.Background()
 	logger := kitlog.NewLogfmtLogger(os.Stdout)
 
-	handler := ServiceHandler(ctx, *svc, logger)
+	handler := MakeHTTPHandler(ctx, svc, logger)
 	handler.ServeHTTP(w, req)
 
 	if w.Code != 201 {

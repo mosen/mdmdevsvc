@@ -22,10 +22,10 @@ var (
 )
 
 type service struct {
-	store Datastore
+	store DeviceRepository
 }
 
-func NewService(ds Datastore) Service {
+func NewService(ds DeviceRepository) Service {
 	return &service{
 		store: ds,
 	}
@@ -33,13 +33,11 @@ func NewService(ds Datastore) Service {
 
 // Create a device. newly generated uuid is set on the device and returned as the first value
 func (s *service) PostDevice(ctx context.Context, d Device) (uuid.UUID, error) {
-	uuidObj, err := s.store.Insert(&d)
-	if err != nil {
+	if err := s.store.Store(&d); err != nil {
 		return uuid.Nil, ErrQueryError
 	}
 
-	d.UUID = uuidObj
-	return uuidObj, nil
+	return d.UUID, nil
 }
 
 func (s *service) GetDevice(ctx context.Context, uuidStr string) (Device, error) {

@@ -6,26 +6,20 @@ import (
 	"fmt"
 )
 
-func TestCreateRequestUnmarshal(t *testing.T) {
-	var jsonBytes []byte = []byte(`{"data":{"id":"12345","type":"devices"}}`)
-	var sut CreateRequest
-
-	if err := json.Unmarshal(jsonBytes, &sut); err != nil {
-		t.Fatal(err)
-	}
-
-	fmt.Printf("%#v\n", sut)
-}
 
 func TestCreateRequestMarshal(t *testing.T) {
-	var cr CreateRequest = CreateRequest{
-		Data{
-			Id: "12345",
+	var postRequest Request
+	postRequest = Request{
+		Data: data{
+			Id: "1",
 			Type: "devices",
+			Attributes: map[string]string{
+				"crud": "crud",
+			},
 		},
 	}
 
-	sut, err := json.Marshal(cr)
+	sut, err := json.Marshal(postRequest)
 	if err != nil {
 		t.Fatal(err)
 	}

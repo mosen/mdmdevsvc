@@ -22,19 +22,13 @@ func MakeServerEndpoints(s Service) Endpoints {
 
 func MakePostDeviceEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		req := request.(jsonapi.CreateRequest)
+		req := request.(jsonapi.Request)
+
 		createDevice := req.Data.Attributes.(Device)
 
-		objectUuid, jsonApiErr := s.PostDevice(ctx, createDevice)
-		if jsonApiErr != nil {
-			return jsonapi.CreateResponse{Data: nil, Errors: []jsonapi.Error{}}, nil
-		}
+		_, jsonApiErr := s.PostDevice(ctx, createDevice)
 
-		return jsonapi.CreateResponse{Data: &jsonapi.Data{
-			Type: "devices",
-			Id: objectUuid.String(),
-			Attributes: req.Data.Attributes,
-		}, Errors: nil}, nil
+		return nil, jsonApiErr
 	}
 }
 

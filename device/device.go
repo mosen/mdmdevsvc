@@ -7,7 +7,7 @@ import (
 
 type Device struct {
 	UUID            uuid.UUID `json:"uuid,omitempty"`
-	UDID            string    `json:"udid,omitempty"`
+	UDID            uuid.UUID `json:"udid,omitempty"`
 	SerialNumber    string    `json:"serial_number,omitempty"`
 	IMEI            string    `json:"imei,omitempty"`
 	MEID            string    `json:"meid,omitempty"`
