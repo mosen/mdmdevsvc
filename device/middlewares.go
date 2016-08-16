@@ -3,7 +3,6 @@ package device
 import (
 	"golang.org/x/net/context"
 	"github.com/go-kit/kit/log"
-	"github.com/satori/go.uuid"
 )
 
 type Middleware func(Service) Service
@@ -22,7 +21,7 @@ type loggingMiddleware struct {
 	logger log.Logger
 }
 
-func (mw loggingMiddleware) PostDevice(ctx context.Context, d Device) (uuid.UUID, error) {
+func (mw loggingMiddleware) PostDevice(ctx context.Context, d *Device) error {
 	mw.logger.Log("method", "PostDevice")
 	return mw.next.PostDevice(ctx, d)
 }

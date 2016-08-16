@@ -2,17 +2,19 @@ package device
 
 import (
 	"github.com/go-kit/kit/endpoint"
-	"github.com/mosen/devicestore/jsonapi"
 	"golang.org/x/net/context"
+	"fmt"
 )
 
 type Endpoints struct {
-	PostDeviceEndpoint	endpoint.Endpoint
-	GetDeviceEndpoint endpoint.Endpoint
-	PutDeviceEndpoint endpoint.Endpoint
-	PatchDeviceEndpoint endpoint.Endpoint
+	PostDeviceEndpoint   endpoint.Endpoint
+	GetDeviceEndpoint    endpoint.Endpoint
+	PutDeviceEndpoint    endpoint.Endpoint
+	PatchDeviceEndpoint  endpoint.Endpoint
 	DeleteDeviceEndpoint endpoint.Endpoint
 }
+
+
 
 func MakeServerEndpoints(s Service) Endpoints {
 	return Endpoints{
@@ -22,14 +24,15 @@ func MakeServerEndpoints(s Service) Endpoints {
 
 func MakePostDeviceEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		req := request.(jsonapi.Request)
+		req := request.(Request)
 
-		createDevice := req.Data.Attributes.(Device)
+		var d *Device = req.Data.Attributes
+		if err := s.PostDevice(ctx, d); err != nil {
+			return nil, err
+		}
 
-		_, jsonApiErr := s.PostDevice(ctx, createDevice)
+		fmt.Printf("returning %T", d)
 
-		return nil, jsonApiErr
+		return d, nil
 	}
 }
-
-

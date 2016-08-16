@@ -32,6 +32,8 @@ func setup() {
 		panic(err)
 	}
 
+	db.Exec("DELETE FROM devices")
+
 	ds = NewRepository(db)
 	svc = NewService(ds)
 }

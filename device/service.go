@@ -8,7 +8,7 @@ import (
 
 // DeviceService provides operations to query and add devices
 type Service interface {
-	PostDevice(ctx context.Context, d Device) (uuid.UUID, error)
+	PostDevice(ctx context.Context, d *Device) error
 	GetDevice(ctx context.Context, uuidStr string) (Device, error)
 	PutDevice(ctx context.Context, uuidStr string, d Device) error
 	PatchDevice(ctx context.Context, uuidStr string, d Device) error
@@ -32,12 +32,12 @@ func NewService(ds DeviceRepository) Service {
 }
 
 // Create a device. newly generated uuid is set on the device and returned as the first value
-func (s *service) PostDevice(ctx context.Context, d Device) (uuid.UUID, error) {
-	if err := s.store.Store(&d); err != nil {
-		return uuid.Nil, ErrQueryError
+func (s *service) PostDevice(ctx context.Context, d *Device) error {
+	if err := s.store.Store(d); err != nil {
+		return err
 	}
 
-	return d.UUID, nil
+	return nil
 }
 
 func (s *service) GetDevice(ctx context.Context, uuidStr string) (Device, error) {

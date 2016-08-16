@@ -70,7 +70,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	deviceDb := device.NewDatastore(db)
+	deviceDb := device.NewRepository(db)
 	deviceSvc := device.NewService(deviceDb)
 	deviceSvc = device.LoggingMiddleware(logger)(deviceSvc)
 	deviceHandler := device.MakeHTTPHandler(ctx, deviceSvc, logger)

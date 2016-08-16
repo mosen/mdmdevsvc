@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS devices (
 
 
   created_at date NOT NULL DEFAULT now(),
-  updated_at date,
+  updated_at date NOT NULL DEFAULT now(),
   deleted_at date
 );
 

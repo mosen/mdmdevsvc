@@ -11,9 +11,9 @@ type Device struct {
 	SerialNumber    string    `json:"serial_number,omitempty"`
 	IMEI            string    `json:"imei,omitempty"`
 	MEID            string    `json:"meid,omitempty"`
-	Created         time.Time `json:"created_at,omitempty"`
-	Updated         time.Time `json:"updated_at,omitempty"`
-	Deleted         time.Time `json:"deleted_at,omitempty"`
+	Created         *time.Time `json:"created_at,omitempty"`
+	Updated         *time.Time `json:"updated_at,omitempty"`
+	Deleted         *time.Time `json:"deleted_at,omitempty"`
 	Name            string    `json:"name,omitempty"`
 	Description     string    `json:"description,omitempty"`
 	Manufacturer    string    `json:"manufacturer,omitempty"`
@@ -21,10 +21,10 @@ type Device struct {
 	ProductName     string    `json:"product_name,omitempty"`
 	Model           string    `json:"model,omitempty"`
 	AssetTag        string    `json:"asset_tag,omitempty"`
-	WarrantyExpires time.Time `json:"warranty_expires,omitempty"`
+	WarrantyExpires *time.Time `json:"warranty_expires,omitempty"`
 	Color           string    `json:"color,omitempty"`
 	OSVersion       string    `json:"os_version,omitempty"`
-	LastCheckin     time.Time `json:"last_checkin,omitempty"`
+	LastCheckin     *time.Time `json:"last_checkin,omitempty"`
 
 	// DEP
 	HasDEP                 bool      `json:"has_dep"`

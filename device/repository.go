@@ -54,37 +54,30 @@ func (d *deviceRepository) FindAll() ([]Device, error) {
 
 // Inserts a device and returns its uuid
 func (d *deviceRepository) Store(device *Device) error {
-	ins := sq.Insert("devices").Columns(
+	query, args, err := sq.Insert("devices").
+		Columns(
 		"udid",
+		"name",
 		"serial_number",
 		"imei",
 		"meid",
-		"product_name",
-		"model",
-		"asset_tag",
-		"color",
-		"os_version",
-	).Values("udid", device.UDID).
-		Values("serial_number", device.SerialNumber).
-		Values("imei", device.IMEI).
-		Values("meid", device.MEID).
-		Values("product_name", device.ProductName).
-		Values("model", device.Model).
-		Values("asset_tag", device.AssetTag).
-		Values("color", device.Color).
-		Values("os_version", device.OSVersion).Suffix("RETURNING \"uuid\"")
+		).
+		Values(
+		device.UDID,
+		device.Name,
+		device.SerialNumber,
+		device.IMEI,
+		device.MEID,
+		).
+		Suffix("RETURNING \"uuid\", \"created_at\", \"updated_at\"").
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
 
-	sql, args, err := ins.ToSql()
 	if err != nil {
 		return err
 	}
 
-	d.Logger.Log(sql)
-
-	var uuidStr string
-	d.QueryRow(sql, args...).Scan(&uuidStr)
-	device.UUID, err = uuid.FromString(uuidStr)
-	if err != nil {
+	if err := d.QueryRow(query, args...).Scan(&device.UUID, &device.Created, &device.Updated); err != nil {
 		return err
 	}
 
