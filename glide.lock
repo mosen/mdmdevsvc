@@ -1,10 +1,20 @@
-hash: 5474b420732bf8959d157024de605f5299292e0e806414fcd3f12b2bf5a83605
-updated: 2016-07-31T15:21:48.962514686+10:00
+hash: 7d8e6fdb3726822de99764d6a6e4075d5acc73d8a429ac1dce713ca4ca720bb6
+updated: 2016-08-20T22:31:09.067391035+10:00
 imports:
+- name: github.com/BurntSushi/toml
+  version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
+- name: github.com/containous/flaeg
+  version: a731c034dda967333efce5f8d276aeff11f8ff87
+- name: github.com/containous/staert
+  version: 044bdfee6c8f5e8fb71f70d5ba1cf4cb11a94e97
 - name: github.com/DavidHuie/gomigrate
   version: 1b90a570dc6b7aaaefa233eacf304be363a89603
+- name: github.com/docker/libkv
+  version: aabc039ad04deb721e234f99cd1b4aa28ac71a40
+  subpackages:
+  - store
 - name: github.com/go-kit/kit
-  version: 12508679d6601843bacae19be6a8f0e84c8b19ed
+  version: 6fb874ce59bb45b2f60ee3d289829db02142ecc6
   subpackages:
   - log
   - log/term
@@ -34,6 +44,12 @@ imports:
   - oid
 - name: github.com/Masterminds/squirrel
   version: caff2d522d550f0998629c85898ad35e8a603328
+- name: github.com/mitchellh/mapstructure
+  version: ca63d7c062ee3c9f34db231e352b60012b4fd0c1
+- name: github.com/ogier/pflag
+  version: 45c278ab3607870051a2ea9040bb85fcb8557481
+- name: github.com/pkg/errors
+  version: 01fa4104b9c248c8945d14d9f128454d5b28d595
 - name: github.com/rs/cors
   version: a62a804a8a009876ca59105f7899938a1349f4b3
 - name: github.com/satori/go.uuid
