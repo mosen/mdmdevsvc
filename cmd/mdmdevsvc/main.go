@@ -27,7 +27,7 @@ type DEPInfo struct {
 	ConsumerSecret string `description:"Consumer secret" short:"s"`
 	AccessToken string `description:"Access token" short:"t"`
 	AccessSecret string `description:"Access secret" short:"a"`
-	SyncInterval int `description:"Sync interval (in seconds)"`
+	SyncInterval int `description:"Sync interval (in seconds)" short:"i"`
 }
 
 type DatabaseInfo struct {
@@ -176,10 +176,15 @@ func run(config *Configuration) {
 		AccessSecret: config.Dep.AccessSecret,
 		AccessToken: config.Dep.AccessToken,
 	}
+
 	depClient, err := dep.NewClient(depConfig, dep.ServerURL(config.Dep.URL))
 	syncer := depsync.NewSyncer(depClient, log.NewContext(logger).With("component", "depsync.Syncer"), depTicker.C)
-	go syncer.Start()
+	depDeviceChan := make(chan dep.Device)
 
+	depWriter := depsync.NewWriter(deviceDb, log.NewContext(logger).With("component", "depsync.Writer"))
+
+	go syncer.Start(depDeviceChan)
+	go depWriter.Start(depDeviceChan)
 
 	logger.Log("exit", <-errs)
 }

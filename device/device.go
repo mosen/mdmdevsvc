@@ -19,8 +19,8 @@ type Device struct {
 	Manufacturer    string    `json:"manufacturer,omitempty"`
 	Vendor          string    `json:"vendor,omitempty"`
 	ProductName     string    `json:"product_name,omitempty"`
-	Model           string    `json:"model,omitempty"`
-	AssetTag        string    `json:"asset_tag,omitempty"`
+	Model           string    `json:"model,omitempty" db:"model"`
+	AssetTag        string    `json:"asset_tag,omitempty" db:"asset_tag"`
 	WarrantyExpires *time.Time `json:"warranty_expires,omitempty"`
 	Color           string    `json:"color,omitempty"`
 	OSVersion       string    `json:"os_version,omitempty"`

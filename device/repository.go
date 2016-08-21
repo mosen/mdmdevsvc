@@ -61,6 +61,14 @@ func (d *deviceRepository) Store(device *Device) error {
 		"serial_number",
 		"imei",
 		"meid",
+		"model",
+		"description",
+		"asset_tag",
+		"has_dep",
+		"color",
+		"dep_profile_status",
+		"dep_profile_assigned_date",
+		"dep_profile_assigned_by",
 		).
 		Values(
 		device.UDID,
@@ -68,6 +76,14 @@ func (d *deviceRepository) Store(device *Device) error {
 		device.SerialNumber,
 		device.IMEI,
 		device.MEID,
+		device.Model,
+		device.Description,
+		device.AssetTag,
+		device.HasDEP,
+		device.Color,
+		device.DepProfileStatus,
+		device.DepProfileAssignedDate,
+		device.DepProfileAssignedBy,
 		).
 		Suffix("RETURNING \"uuid\", \"created_at\", \"updated_at\"").
 		PlaceholderFormat(sq.Dollar).
