@@ -36,3 +36,7 @@ func MakePostDeviceEndpoint(s Service) endpoint.Endpoint {
 		return d, nil
 	}
 }
+
+type postDeviceRequest struct {
+
+}

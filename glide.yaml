@@ -21,3 +21,4 @@ import:
   version: ^0.2.0
 - package: github.com/pkg/errors
   version: ^0.7.0
+- package: github.com/micromdm/dep
