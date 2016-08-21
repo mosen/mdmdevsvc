@@ -22,3 +22,6 @@ import:
 - package: github.com/pkg/errors
   version: ^0.7.0
 - package: github.com/micromdm/dep
+- package: github.com/garyburd/go-oauth
+  subpackages:
+  - oauth

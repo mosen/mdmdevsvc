@@ -8,3 +8,10 @@ password = "mdmdevsvc"
 [listen]
 ip = "0.0.0.0"
 port = "8092"
+
+[dep]
+accesssecret = ""
+accesstoken = ""
+consumerkey = ""
+consumersecret = ""
+syncinterval = 60
