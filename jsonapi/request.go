@@ -2,10 +2,10 @@ package jsonapi
 
 import (
 	"encoding/json"
+	"fmt"
 	"golang.org/x/net/context"
 	"net/http"
 	"net/url"
-	"fmt"
 )
 
 type Data struct {

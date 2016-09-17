@@ -8,7 +8,7 @@ type ErrorSource struct {
 
 // Error is a JSON-API standard error object
 type Error struct {
-	Id     string            `json:"id,omitempty"`
+	Id string `json:"id,omitempty"`
 	//Links  Links             `json:"links,omitempty"`
 	Status string            `json:"status,omitempty"`
 	Code   string            `json:"code,omitempty"`

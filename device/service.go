@@ -1,9 +1,9 @@
 package device
 
 import (
+	"errors"
 	"github.com/satori/go.uuid"
 	"golang.org/x/net/context"
-	"errors"
 )
 
 // DeviceService provides operations to query and add devices
@@ -17,8 +17,8 @@ type Service interface {
 
 var (
 	ErrMalformedUUID = errors.New("malformed UUID")
-	ErrNotFound	= errors.New("device not found")
-	ErrQueryError	= errors.New("error performing query")
+	ErrNotFound      = errors.New("device not found")
+	ErrQueryError    = errors.New("error performing query")
 )
 
 type service struct {
@@ -65,7 +65,6 @@ func (s *service) PutDevice(ctx context.Context, uuidStr string, d Device) error
 func (s *service) PatchDevice(ctx context.Context, uuidStr string, d Device) error {
 	return errors.New("Not Implemented")
 }
-
 
 func (s *service) DeleteDevice(ctx context.Context, uuidStr string) error {
 	uuidObj, err := uuid.FromString(uuidStr)

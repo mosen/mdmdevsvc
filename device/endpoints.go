@@ -1,9 +1,9 @@
 package device
 
 import (
+	"fmt"
 	"github.com/go-kit/kit/endpoint"
 	"golang.org/x/net/context"
-	"fmt"
 )
 
 type Endpoints struct {
@@ -13,8 +13,6 @@ type Endpoints struct {
 	PatchDeviceEndpoint  endpoint.Endpoint
 	DeleteDeviceEndpoint endpoint.Endpoint
 }
-
-
 
 func MakeServerEndpoints(s Service) Endpoints {
 	return Endpoints{
@@ -38,5 +36,4 @@ func MakePostDeviceEndpoint(s Service) endpoint.Endpoint {
 }
 
 type postDeviceRequest struct {
-
 }

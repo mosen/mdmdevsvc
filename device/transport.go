@@ -2,13 +2,13 @@ package device
 
 import (
 	"encoding/json"
+	"fmt"
 	kitlog "github.com/go-kit/kit/log"
 	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
 	"golang.org/x/net/context"
 	"net/http"
 	"net/url"
-	"fmt"
 )
 
 type Data struct {
@@ -50,8 +50,8 @@ func encodePostDeviceResponse(_ context.Context, w http.ResponseWriter, response
 		var jsonApiResponse Request
 		jsonApiResponse = Request{
 			Data: Data{
-				Id: device.UUID.String(),
-				Type: "devices",
+				Id:         device.UUID.String(),
+				Type:       "devices",
 				Attributes: device,
 			},
 		}
@@ -83,7 +83,6 @@ func MakeHTTPHandler(ctx context.Context, s Service, logger kitlog.Logger) http.
 
 	return r
 }
-
 
 func codeFrom(err error) int {
 	switch err {
